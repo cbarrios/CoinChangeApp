@@ -1,4 +1,4 @@
-package com.example.coinchange.ui.screens
+package com.example.coinchange.ui.screens.coins
 
 import com.example.coinchange.domain.model.Coin
 

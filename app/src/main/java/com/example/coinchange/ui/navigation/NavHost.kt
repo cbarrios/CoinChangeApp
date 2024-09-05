@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.coinchange.ui.screens.CoinsScreen
+import com.example.coinchange.ui.screens.coins.CoinsScreen
 
 @Composable
 fun AppNavHost(
