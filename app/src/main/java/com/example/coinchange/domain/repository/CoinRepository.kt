@@ -7,5 +7,5 @@ interface CoinRepository {
 
     fun getCoinStream(): Flow<List<Coin>>
 
-    suspend fun toggleCoinCheck()
+    suspend fun toggleCoinCheck(value: Int)
 }
