@@ -1,5 +1,8 @@
 package com.example.coinchange.ui.screens.coins
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +17,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -46,31 +48,39 @@ fun CoinsScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            ExtendedFloatingActionButton(
-                onClick = {
-                    // TODO
-                },
+            AnimatedVisibility(
+                visible = uiState.anyCoinChecked,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(16.dp),
-                containerColor = MaterialTheme.colorScheme.onSurface,
-                contentColor = MaterialTheme.colorScheme.surface,
-                shape = CircleShape
+                enter = slideInHorizontally(),
+                exit = fadeOut()
             ) {
-                Text(text = stringResource(if (uiState.anyCoinChecked) R.string.continue_text else R.string.pick))
-                Spacer(modifier = Modifier.width(8.dp))
-                Icon(
-                    imageVector = if (uiState.anyCoinChecked) Icons.AutoMirrored.Filled.ArrowForward else Icons.Default.KeyboardArrowUp,
-                    contentDescription = stringResource(R.string.edit_coins)
-                )
+                ExtendedFloatingActionButton(
+                    onClick = {
+                        if (uiState.anyCoinChecked) {
+                            // TODO
+                        }
+                    },
+                    containerColor = MaterialTheme.colorScheme.onSurface,
+                    contentColor = MaterialTheme.colorScheme.surface,
+                    shape = CircleShape
+                ) {
+                    Text(text = stringResource(R.string.continue_text))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = stringResource(R.string.edit_coins)
+                    )
+                }
             }
             FloatingActionButton(
                 onClick = {},
                 modifier = Modifier
                     .align(Alignment.BottomStart)
                     .padding(16.dp),
-                containerColor = MaterialTheme.colorScheme.onSurface,
-                contentColor = MaterialTheme.colorScheme.surface,
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface,
                 shape = CircleShape
             ) {
                 Icon(

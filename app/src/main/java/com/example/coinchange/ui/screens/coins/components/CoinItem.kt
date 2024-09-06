@@ -2,6 +2,7 @@ package com.example.coinchange.ui.screens.coins.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -23,13 +24,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.coinchange.R
 import com.example.coinchange.domain.model.Coin
+import com.example.coinchange.ui.theme.DarkGold
 import com.example.coinchange.ui.theme.Gold
 
 @Composable
 fun CoinItem(
     coin: Coin,
-    onCoinClick: (Int) -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onCoinClick: (Int) -> Unit = {}
 ) {
     Box {
         Box(
@@ -37,16 +39,15 @@ fun CoinItem(
                 .size(128.dp)
                 .clip(CircleShape)
                 .background(Gold, CircleShape)
-                .clickable {
-                    onCoinClick(coin.value)
-                },
+                .clickable { onCoinClick(coin.value) }
+                .border(8.dp, DarkGold, CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = stringResource(R.string.value_cents_symbol, coin.value),
                 color = Color.Black,
-                fontWeight = if (coin.isChecked) FontWeight.Bold else FontWeight.SemiBold,
-                fontSize = if (coin.isChecked) MaterialTheme.typography.titleLarge.fontSize else MaterialTheme.typography.bodyLarge.fontSize
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold
             )
         }
         Box(
