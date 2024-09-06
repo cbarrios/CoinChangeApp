@@ -1,5 +1,6 @@
 package com.example.coinchange.ui.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -15,7 +16,7 @@ fun AppNavHost(
     NavHost(
         navController = navController,
         startDestination = CoinsScreen,
-        modifier = modifier
+        modifier = modifier.fillMaxSize()
     ) {
         composable<CoinsScreen> {
             CoinsScreen()

@@ -18,14 +18,17 @@ class CoinsViewModel @Inject constructor(
 ) : ViewModel() {
 
     val uiState = coinRepository.getCoinStream()
-        .map {
-            CoinsUiState(coins = it)
+        .map { coins ->
+            CoinsUiState(
+                coins = coins,
+                anyCoinChecked = coins.any { it.isChecked }
+            )
         }
         .flowOn(Dispatchers.Default)
         .stateIn(
             viewModelScope,
             SharingStarted.Eagerly,
-            CoinsUiState(coins = emptyList())
+            CoinsUiState.default
         )
 
     fun onCoinClick(value: Int) {

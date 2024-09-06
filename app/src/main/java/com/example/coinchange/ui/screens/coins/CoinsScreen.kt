@@ -1,19 +1,35 @@
 package com.example.coinchange.ui.screens.coins
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.coinchange.R
 import com.example.coinchange.ui.screens.coins.components.CoinItem
 
 @Composable
@@ -22,22 +38,69 @@ fun CoinsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        LazyVerticalGrid(
-            columns = GridCells.FixedSize(128.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(32.dp)
+    Scaffold(
+        modifier = Modifier.fillMaxSize()
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
         ) {
-            items(uiState.coins) {
-                CoinItem(
-                    coin = it,
-                    modifier = Modifier.padding(vertical = 8.dp),
-                    onCoinClick = viewModel::onCoinClick
+            ExtendedFloatingActionButton(
+                onClick = {
+                    // TODO
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp),
+                containerColor = MaterialTheme.colorScheme.onSurface,
+                contentColor = MaterialTheme.colorScheme.surface,
+                shape = CircleShape
+            ) {
+                Text(text = stringResource(if (uiState.anyCoinChecked) R.string.continue_text else R.string.pick))
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    imageVector = if (uiState.anyCoinChecked) Icons.AutoMirrored.Filled.ArrowForward else Icons.Default.KeyboardArrowUp,
+                    contentDescription = stringResource(R.string.edit_coins)
                 )
+            }
+            FloatingActionButton(
+                onClick = {},
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(16.dp),
+                containerColor = MaterialTheme.colorScheme.onSurface,
+                contentColor = MaterialTheme.colorScheme.surface,
+                shape = CircleShape
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = stringResource(R.string.continue_text)
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.pick_your_coins),
+                    style = MaterialTheme.typography.displayLarge,
+                    modifier = Modifier.padding(16.dp)
+                )
+                LazyVerticalGrid(
+                    columns = GridCells.FixedSize(128.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(uiState.coins) {
+                        CoinItem(
+                            coin = it,
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            onCoinClick = viewModel::onCoinClick
+                        )
+                    }
+                }
             }
         }
     }
