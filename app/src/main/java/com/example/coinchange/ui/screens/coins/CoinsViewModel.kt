@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,4 +27,10 @@ class CoinsViewModel @Inject constructor(
             SharingStarted.Eagerly,
             CoinsUiState(coins = emptyList())
         )
+
+    fun onCoinClick(value: Int) {
+        viewModelScope.launch {
+            coinRepository.toggleCoinCheck(value)
+        }
+    }
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Coin Change</string>
+    <string name="value_cents_symbol">%d¢</string>
 </resources>
