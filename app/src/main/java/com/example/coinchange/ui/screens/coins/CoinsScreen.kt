@@ -49,6 +49,30 @@ fun CoinsScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.pick_your_coins),
+                    style = MaterialTheme.typography.displayLarge,
+                    modifier = Modifier.padding(16.dp)
+                )
+                LazyVerticalGrid(
+                    columns = GridCells.FixedSize(128.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(uiState.coins) {
+                        CoinItem(
+                            coin = it,
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            onCoinClick = viewModel::onCoinClick
+                        )
+                    }
+                }
+            }
             AnimatedVisibility(
                 visible = uiState.anyCoinChecked,
                 modifier = Modifier
@@ -88,30 +112,6 @@ fun CoinsScreen(
                     imageVector = Icons.Default.Edit,
                     contentDescription = stringResource(R.string.continue_text)
                 )
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.pick_your_coins),
-                    style = MaterialTheme.typography.displayLarge,
-                    modifier = Modifier.padding(16.dp)
-                )
-                LazyVerticalGrid(
-                    columns = GridCells.FixedSize(128.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(uiState.coins) {
-                        CoinItem(
-                            coin = it,
-                            modifier = Modifier.padding(vertical = 8.dp),
-                            onCoinClick = viewModel::onCoinClick
-                        )
-                    }
-                }
             }
         }
     }

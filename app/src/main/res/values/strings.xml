@@ -5,4 +5,6 @@
     <string name="continue_text">Continue</string>
     <string name="edit_coins">Edit Coins</string>
     <string name="pick">Pick</string>
+    <string name="enter_your_change">Enter Your Change</string>
+    <string name="go">Go</string>
 </resources>

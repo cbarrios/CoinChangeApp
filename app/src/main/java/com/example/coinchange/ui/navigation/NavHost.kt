@@ -29,7 +29,11 @@ fun AppNavHost(
             )
         }
         composable<ChangeScreen> {
-            ChangeScreen()
+            ChangeScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }
