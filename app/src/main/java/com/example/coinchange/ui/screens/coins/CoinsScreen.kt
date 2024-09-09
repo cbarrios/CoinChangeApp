@@ -36,6 +36,7 @@ import com.example.coinchange.ui.screens.coins.components.CoinItem
 
 @Composable
 fun CoinsScreen(
+    onNavigateToChangeScreen: () -> Unit,
     viewModel: CoinsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -59,7 +60,7 @@ fun CoinsScreen(
                 ExtendedFloatingActionButton(
                     onClick = {
                         if (uiState.anyCoinChecked) {
-                            // TODO
+                            onNavigateToChangeScreen()
                         }
                     },
                     containerColor = MaterialTheme.colorScheme.onSurface,

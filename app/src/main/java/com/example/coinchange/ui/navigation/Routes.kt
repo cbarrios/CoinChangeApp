@@ -4,3 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 object CoinsScreen
+
+@Serializable
+object ChangeScreen
