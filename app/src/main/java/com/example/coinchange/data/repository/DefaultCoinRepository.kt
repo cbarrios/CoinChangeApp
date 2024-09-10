@@ -1,6 +1,7 @@
 package com.example.coinchange.data.repository
 
 import com.example.coinchange.data.local.CoinsProvider
+import com.example.coinchange.domain.model.ChangeValidation
 import com.example.coinchange.domain.model.Coin
 import com.example.coinchange.domain.repository.CoinRepository
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +25,22 @@ class DefaultCoinRepository : CoinRepository {
                         coin
                 }
             }
+        }
+    }
+
+    override suspend fun validateChange(change: String): ChangeValidation {
+        return withContext(Dispatchers.Default) {
+            val value = change.toIntOrNull()
+            val isInteger = value != null
+            val isGreaterOrEqualZero = value?.let { it >= 0 } ?: false
+            val isLessThanOneHundred = value?.let { it < 100 } ?: false
+            val isValidChange = isInteger && isGreaterOrEqualZero && isLessThanOneHundred
+            ChangeValidation(
+                isInteger = isInteger,
+                isGreaterOrEqualZero = isGreaterOrEqualZero,
+                isLessThanOneHundred = isLessThanOneHundred,
+                isValidChange = isValidChange
+            )
         }
     }
 }

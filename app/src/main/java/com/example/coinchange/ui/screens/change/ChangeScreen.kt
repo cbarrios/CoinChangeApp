@@ -12,12 +12,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -29,11 +31,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.coinchange.R
+import com.example.coinchange.ui.screens.change.components.ValidationItem
 
 @Composable
 fun ChangeScreen(
@@ -74,11 +78,34 @@ fun ChangeScreen(
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold,
                         fontSize = 24.sp
-                    )
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                    placeholder = {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.cents),
+                            style = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+                        )
+                    }
+                )
+                Spacer(modifier = Modifier.height(32.dp))
+                ValidationItem(
+                    text = stringResource(R.string.integer_number),
+                    isValid = uiState.validation.isInteger
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                ValidationItem(
+                    text = stringResource(R.string.greater_or_equal_to_0),
+                    isValid = uiState.validation.isGreaterOrEqualZero
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                ValidationItem(
+                    text = stringResource(R.string.less_than_100),
+                    isValid = uiState.validation.isLessThanOneHundred
                 )
             }
             AnimatedVisibility(
-                visible = uiState.isValidChange,
+                visible = uiState.validation.isValidChange,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(16.dp),
@@ -87,7 +114,7 @@ fun ChangeScreen(
             ) {
                 ExtendedFloatingActionButton(
                     onClick = {
-                        if (uiState.isValidChange) {
+                        if (uiState.validation.isValidChange) {
                             // TODO
                         }
                     },

@@ -7,4 +7,8 @@
     <string name="pick">Pick</string>
     <string name="enter_your_change">Enter Your Change</string>
     <string name="go">Go</string>
+    <string name="integer_number">Integer number</string>
+    <string name="greater_or_equal_to_0">Greater or equal to 0</string>
+    <string name="less_than_100">Less than 100</string>
+    <string name="cents">Cents</string>
 </resources>
