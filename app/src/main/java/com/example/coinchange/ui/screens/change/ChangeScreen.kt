@@ -26,11 +26,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -45,6 +50,11 @@ fun ChangeScreen(
     viewModel: ChangeViewModel = hiltViewModel()
 ) {
     val uiState = viewModel.uiState
+
+    val requester = remember { FocusRequester() }
+    LaunchedEffect(key1 = Unit) {
+        requester.requestFocus()
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize()
@@ -65,7 +75,9 @@ fun ChangeScreen(
                 )
                 Spacer(modifier = Modifier.height(32.dp))
                 TextField(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .focusRequester(requester),
                     value = uiState.change,
                     onValueChange = viewModel::onChangeEntered,
                     singleLine = true,
@@ -79,13 +91,19 @@ fun ChangeScreen(
                         fontWeight = FontWeight.Bold,
                         fontSize = 24.sp
                     ),
-                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Done
+                    ),
                     placeholder = {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = stringResource(R.string.cents),
+                            text = stringResource(R.string.value),
                             style = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
                         )
+                    },
+                    suffix = {
+                        Text(text = stringResource(R.string.cents_symbol))
                     }
                 )
                 Spacer(modifier = Modifier.height(32.dp))
@@ -122,7 +140,7 @@ fun ChangeScreen(
                     contentColor = MaterialTheme.colorScheme.surface,
                     shape = CircleShape
                 ) {
-                    Text(text = stringResource(R.string.go))
+                    Text(text = stringResource(R.string.continue_text))
                     Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
