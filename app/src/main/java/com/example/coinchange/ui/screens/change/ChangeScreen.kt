@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
@@ -67,9 +69,11 @@ fun ChangeScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(32.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
+                Spacer(modifier = Modifier.height(32.dp))
                 Text(
+                    modifier = Modifier.padding(horizontal = 32.dp),
                     text = stringResource(R.string.enter_your_change),
                     style = MaterialTheme.typography.displayLarge
                 )
@@ -77,6 +81,7 @@ fun ChangeScreen(
                 TextField(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(horizontal = 32.dp)
                         .focusRequester(requester),
                     value = uiState.change,
                     onValueChange = viewModel::onChangeEntered,
@@ -108,19 +113,23 @@ fun ChangeScreen(
                 )
                 Spacer(modifier = Modifier.height(32.dp))
                 ValidationItem(
+                    modifier = Modifier.padding(horizontal = 32.dp),
                     text = stringResource(R.string.integer_number),
                     isValid = uiState.validation.isInteger
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 ValidationItem(
+                    modifier = Modifier.padding(horizontal = 32.dp),
                     text = stringResource(R.string.greater_or_equal_to_0),
                     isValid = uiState.validation.isGreaterOrEqualZero
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 ValidationItem(
+                    modifier = Modifier.padding(horizontal = 32.dp),
                     text = stringResource(R.string.less_than_100),
                     isValid = uiState.validation.isLessThanOneHundred
                 )
+                Spacer(modifier = Modifier.height(32.dp))
             }
             AnimatedVisibility(
                 visible = uiState.validation.isValidChange,
