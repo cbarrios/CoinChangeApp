@@ -21,7 +21,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -34,7 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -86,10 +85,11 @@ fun ChangeScreen(
                     value = uiState.change,
                     onValueChange = viewModel::onChangeEntered,
                     singleLine = true,
-                    shape = CircleShape,
+                    shape = RectangleShape,
                     colors = TextFieldDefaults.colors(
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
+                        focusedIndicatorColor = MaterialTheme.colorScheme.onSurface,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer
                     ),
                     textStyle = MaterialTheme.typography.bodyLarge.copy(
                         textAlign = TextAlign.Center,
@@ -104,11 +104,17 @@ fun ChangeScreen(
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = stringResource(R.string.value),
-                            style = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Center
                         )
                     },
                     suffix = {
-                        Text(text = stringResource(R.string.cents_symbol))
+                        Text(
+                            text = stringResource(R.string.cents_symbol),
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 24.sp
+                        )
                     }
                 )
                 Spacer(modifier = Modifier.height(32.dp))
