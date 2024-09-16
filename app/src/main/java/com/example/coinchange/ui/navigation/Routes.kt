@@ -7,3 +7,6 @@ object CoinsScreen
 
 @Serializable
 object ChangeScreen
+
+@Serializable
+data class ResultScreen(val change: Int)

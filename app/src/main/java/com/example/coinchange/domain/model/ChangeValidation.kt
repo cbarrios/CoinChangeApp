@@ -4,7 +4,8 @@ data class ChangeValidation(
     val isInteger: Boolean,
     val isGreaterOrEqualZero: Boolean,
     val isLessThanOneHundred: Boolean,
-    val isValidChange: Boolean
+    val isValidChange: Boolean,
+    val actualChange: Int?
 ) {
 
     companion object {
@@ -12,7 +13,8 @@ data class ChangeValidation(
             isInteger = false,
             isGreaterOrEqualZero = false,
             isLessThanOneHundred = false,
-            isValidChange = false
+            isValidChange = false,
+            actualChange = null
         )
     }
 }

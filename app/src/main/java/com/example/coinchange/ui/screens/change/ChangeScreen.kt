@@ -48,9 +48,11 @@ import com.example.coinchange.ui.screens.change.components.ValidationItem
 @Composable
 fun ChangeScreen(
     onNavigateUp: () -> Unit,
+    onNavigateToResultScreen: (Int) -> Unit,
     viewModel: ChangeViewModel = hiltViewModel()
 ) {
     val uiState = viewModel.uiState
+    val validation = uiState.validation
 
     val requester = remember { FocusRequester() }
     LaunchedEffect(key1 = Unit) {
@@ -121,24 +123,24 @@ fun ChangeScreen(
                 ValidationItem(
                     modifier = Modifier.padding(horizontal = 32.dp),
                     text = stringResource(R.string.integer_number),
-                    isValid = uiState.validation.isInteger
+                    isValid = validation.isInteger
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 ValidationItem(
                     modifier = Modifier.padding(horizontal = 32.dp),
                     text = stringResource(R.string.greater_or_equal_to_0),
-                    isValid = uiState.validation.isGreaterOrEqualZero
+                    isValid = validation.isGreaterOrEqualZero
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 ValidationItem(
                     modifier = Modifier.padding(horizontal = 32.dp),
                     text = stringResource(R.string.less_than_100),
-                    isValid = uiState.validation.isLessThanOneHundred
+                    isValid = validation.isLessThanOneHundred
                 )
                 Spacer(modifier = Modifier.height(32.dp))
             }
             AnimatedVisibility(
-                visible = uiState.validation.isValidChange,
+                visible = validation.isValidChange,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(16.dp),
@@ -147,8 +149,9 @@ fun ChangeScreen(
             ) {
                 ExtendedFloatingActionButton(
                     onClick = {
-                        if (uiState.validation.isValidChange) {
-                            // TODO
+                        // We know that actualChange is already validated if it is non null
+                        validation.actualChange?.let { change ->
+                            onNavigateToResultScreen(change)
                         }
                     },
                     containerColor = MaterialTheme.colorScheme.onSurface,

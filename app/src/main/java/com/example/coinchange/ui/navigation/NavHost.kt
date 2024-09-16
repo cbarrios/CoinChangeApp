@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.coinchange.ui.screens.change.ChangeScreen
 import com.example.coinchange.ui.screens.coins.CoinsScreen
+import com.example.coinchange.ui.screens.result.ResultScreen
 
 @Composable
 fun AppNavHost(
@@ -32,8 +33,16 @@ fun AppNavHost(
             ChangeScreen(
                 onNavigateUp = {
                     navController.navigateUp()
+                },
+                onNavigateToResultScreen = { change ->
+                    navController.navigate(ResultScreen(change)) {
+                        launchSingleTop = true
+                    }
                 }
             )
+        }
+        composable<ResultScreen> {
+            ResultScreen()
         }
     }
 }

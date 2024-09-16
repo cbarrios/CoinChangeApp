@@ -39,7 +39,8 @@ class DefaultCoinRepository : CoinRepository {
                 isInteger = isInteger,
                 isGreaterOrEqualZero = isGreaterOrEqualZero,
                 isLessThanOneHundred = isLessThanOneHundred,
-                isValidChange = isValidChange
+                isValidChange = isValidChange,
+                actualChange = if (isValidChange) value else null
             )
         }
     }
