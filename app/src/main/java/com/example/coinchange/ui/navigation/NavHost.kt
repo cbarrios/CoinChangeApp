@@ -42,7 +42,11 @@ fun AppNavHost(
             )
         }
         composable<ResultScreen> {
-            ResultScreen()
+            ResultScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }
