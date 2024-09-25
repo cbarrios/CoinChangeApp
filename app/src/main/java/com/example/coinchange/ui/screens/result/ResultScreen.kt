@@ -61,7 +61,9 @@ fun ResultScreen(
                 modifier = Modifier.fillMaxSize(),
                 floatingActionButton = {
                     ExtendedFloatingActionButton(
-                        onClick = {},
+                        onClick = {
+                            viewModel.onCalculateClick(uiState.coins, uiState.change)
+                        },
                         containerColor = MaterialTheme.colorScheme.onSurface,
                         contentColor = MaterialTheme.colorScheme.surface,
                         shape = CircleShape
