@@ -15,7 +15,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CoinChangeTheme {
-                AppNavHost()
+                AppNavHost(
+                    onMoveTaskToBack = {
+                        moveTaskToBack(false)
+                    }
+                )
             }
         }
     }

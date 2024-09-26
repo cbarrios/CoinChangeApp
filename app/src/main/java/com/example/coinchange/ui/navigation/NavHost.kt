@@ -12,7 +12,8 @@ import com.example.coinchange.ui.screens.result.ResultScreen
 
 @Composable
 fun AppNavHost(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onMoveTaskToBack: () -> Unit,
 ) {
     val navController = rememberNavController()
     NavHost(
@@ -45,7 +46,11 @@ fun AppNavHost(
             ResultScreen(
                 onNavigateUp = {
                     navController.navigateUp()
-                }
+                },
+                onNavigateToCoinsScreen = {
+                    navController.popBackStack(route = CoinsScreen, inclusive = false)
+                },
+                onSystemBackPress = onMoveTaskToBack
             )
         }
     }

@@ -16,4 +16,11 @@
     <string name="your_desired_amount_is">Your desired amount is</string>
     <string name="coins">Coins</string>
     <string name="change">Change</string>
+    <string name="result">Result</string>
+    <string name="zero_change_message">There\'s no need to give you change.</string>
+    <string name="start_over">Start Over</string>
+    <string name="would_you_like_to_try_again">Would you like to try again?</string>
+    <string name="confirm">Confirm</string>
+    <string name="invalid_change_message">We cannot give you change based on your input.</string>
+    <string name="valid_change_message">We got your change.</string>
 </resources>
