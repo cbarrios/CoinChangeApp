@@ -12,11 +12,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -32,6 +34,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -62,13 +66,31 @@ fun ResultScreen(
                 floatingActionButton = {
                     ExtendedFloatingActionButton(
                         onClick = {
-                            viewModel.onCalculateClick(uiState.coins, uiState.change)
+                            if (!uiState.isCalculating) {
+                                viewModel.onCalculateClick(uiState.coins, uiState.change)
+                            }
                         },
                         containerColor = MaterialTheme.colorScheme.onSurface,
                         contentColor = MaterialTheme.colorScheme.surface,
                         shape = CircleShape
                     ) {
-                        Text(text = stringResource(R.string.calculate))
+                        Box(
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(R.string.calculate),
+                                color = if (!uiState.isCalculating) Color.Unspecified else MaterialTheme.colorScheme.onSurface
+                            )
+                            if (uiState.isCalculating) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .size(24.dp)
+                                        .clip(CircleShape),
+                                    color = MaterialTheme.colorScheme.surface,
+                                    strokeWidth = 4.dp
+                                )
+                            }
+                        }
                     }
                 },
                 floatingActionButtonPosition = FabPosition.Center
@@ -86,65 +108,91 @@ fun ResultScreen(
                         Spacer(modifier = Modifier.height(32.dp))
                         Text(
                             modifier = Modifier.padding(horizontal = 32.dp),
-                            text = stringResource(R.string.review_your_options),
+                            text = stringResource(R.string.check_your_input),
                             style = MaterialTheme.typography.displayLarge
                         )
                         Spacer(modifier = Modifier.height(32.dp))
-                        Text(
-                            modifier = Modifier.padding(horizontal = 32.dp),
-                            text = stringResource(R.string.coins_caps),
-                            style = MaterialTheme.typography.labelLarge,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        LazyRow(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            contentPadding = PaddingValues(horizontal = 32.dp)
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 32.dp)
+                                .background(
+                                    MaterialTheme.colorScheme.surfaceContainer,
+                                    RoundedCornerShape(16.dp)
+                                )
                         ) {
-                            items(uiState.coins) { value ->
-                                SimpleCoinItem(value = value)
+                            Column {
+                                Spacer(modifier = Modifier.height(16.dp))
+                                Text(
+                                    modifier = Modifier.padding(horizontal = 16.dp),
+                                    text = stringResource(id = R.string.coins),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                LazyRow(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                    contentPadding = PaddingValues(16.dp)
+                                ) {
+                                    items(uiState.coins) { value ->
+                                        SimpleCoinItem(value = value)
+                                    }
+                                }
                             }
                         }
                         Spacer(modifier = Modifier.height(32.dp))
-                        Text(
-                            modifier = Modifier.padding(horizontal = 32.dp),
-                            text = stringResource(R.string.change_caps),
-                            style = MaterialTheme.typography.labelLarge,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row(
+                        Box(
                             modifier = Modifier
+                                .fillMaxSize()
                                 .padding(horizontal = 32.dp)
-                                .horizontalScroll(rememberScrollState()),
-                            verticalAlignment = Alignment.CenterVertically
+                                .background(
+                                    MaterialTheme.colorScheme.surfaceContainer,
+                                    RoundedCornerShape(16.dp)
+                                )
                         ) {
-                            Text(
-                                text = stringResource(R.string.your_desired_amount_is),
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Box(
-                                modifier = Modifier.background(
-                                    MaterialTheme.colorScheme.primaryContainer,
-                                    CircleShape
-                                ),
-                                contentAlignment = Alignment.Center
+                            Column(
+                                modifier = Modifier.padding(16.dp)
                             ) {
                                 Text(
-                                    text = stringResource(
-                                        id = R.string.value_cents_symbol,
-                                        uiState.change
-                                    ),
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp),
-                                    fontWeight = FontWeight.Bold,
-                                    style = MaterialTheme.typography.bodyLarge
+                                    text = stringResource(id = R.string.change),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold
                                 )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Row(
+                                    modifier = Modifier.horizontalScroll(rememberScrollState()),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.your_desired_amount_is),
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Box(
+                                        modifier = Modifier.background(
+                                            MaterialTheme.colorScheme.primaryContainer,
+                                            CircleShape
+                                        ),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(
+                                            text = stringResource(
+                                                id = R.string.value_cents_symbol,
+                                                uiState.change
+                                            ),
+                                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                            modifier = Modifier.padding(
+                                                horizontal = 6.dp,
+                                                vertical = 3.dp
+                                            ),
+                                            fontWeight = FontWeight.Bold,
+                                            style = MaterialTheme.typography.bodyLarge
+                                        )
+                                    }
+                                }
                             }
                         }
                         Spacer(modifier = Modifier.height(32.dp))
@@ -168,7 +216,9 @@ fun ResultScreen(
         }
 
         is ResultUiState.CalculationSuccess -> {
-            // TODO
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(uiState.result.toString())
+            }
         }
     }
 }

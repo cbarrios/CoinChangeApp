@@ -1,7 +1,6 @@
 package com.example.coinchange.ui.screens.result
 
-import androidx.annotation.StringRes
-import com.example.coinchange.domain.model.CoinChange
+import com.example.coinchange.domain.model.CoinChangeResult
 
 sealed interface ResultUiState {
 
@@ -10,9 +9,8 @@ sealed interface ResultUiState {
     data class Default(
         val coins: List<Int>,
         val change: Int,
-        val isCalculating: Boolean = false,
-        @StringRes val calculationError: Int? = null
+        val isCalculating: Boolean = false
     ) : ResultUiState
 
-    data class CalculationSuccess(val result: List<CoinChange>) : ResultUiState
+    data class CalculationSuccess(val result: CoinChangeResult) : ResultUiState
 }

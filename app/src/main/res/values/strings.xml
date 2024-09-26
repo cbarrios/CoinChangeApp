@@ -11,9 +11,9 @@
     <string name="greater_or_equal_to_0">Greater or equal to 0</string>
     <string name="less_than_100">Less than 100</string>
     <string name="cents_symbol">¢</string>
-    <string name="review_your_options">Review Your Options</string>
+    <string name="check_your_input">Check Your Input</string>
     <string name="calculate">Calculate</string>
     <string name="your_desired_amount_is">Your desired amount is</string>
-    <string name="coins_caps">COINS</string>
-    <string name="change_caps">CHANGE</string>
+    <string name="coins">Coins</string>
+    <string name="change">Change</string>
 </resources>
