@@ -1,7 +1,9 @@
 package com.example.coinchange.ui.screens.result
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,11 +30,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -41,8 +46,12 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -57,6 +66,7 @@ import com.example.coinchange.R
 import com.example.coinchange.domain.model.CoinChangeResult
 import com.example.coinchange.ui.screens.result.components.CoinChangeItem
 import com.example.coinchange.ui.screens.result.components.SimpleCoinItem
+import com.example.coinchange.ui.util.header
 import kotlinx.coroutines.launch
 
 @Composable
@@ -378,40 +388,7 @@ fun ResultScreen(
                                 text = stringResource(R.string.result),
                                 style = MaterialTheme.typography.displayLarge
                             )
-                            Spacer(modifier = Modifier.height(32.dp))
-                            Box(
-                                modifier = Modifier
-                                    .padding(horizontal = 32.dp)
-                                    .background(
-                                        MaterialTheme.colorScheme.surfaceContainer,
-                                        RoundedCornerShape(16.dp)
-                                    )
-                            ) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .size(32.dp)
-                                            .background(Color.Green, CircleShape),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Default.Check,
-                                            contentDescription = null,
-                                            tint = Color.Black
-                                        )
-                                    }
-                                    Spacer(modifier = Modifier.width(16.dp))
-                                    Text(
-                                        text = stringResource(id = R.string.valid_change_message)
-                                    )
-                                }
-                            }
-                            Spacer(modifier = Modifier.height(8.dp))
+                            Spacer(modifier = Modifier.height(16.dp))
                             LazyVerticalGrid(
                                 modifier = Modifier.fillMaxSize(),
                                 columns = GridCells.FixedSize(128.dp),
@@ -419,6 +396,87 @@ fun ResultScreen(
                                 verticalArrangement = Arrangement.spacedBy(8.dp),
                                 contentPadding = PaddingValues(16.dp)
                             ) {
+                                header {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(bottom = 16.dp)
+                                            .clip(RoundedCornerShape(16.dp))
+                                            .background(
+                                                MaterialTheme.colorScheme.surfaceContainer,
+                                                RoundedCornerShape(16.dp)
+                                            )
+                                    ) {
+                                        var isExpanded by rememberSaveable {
+                                            mutableStateOf(false)
+                                        }
+                                        Column(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .clickable { isExpanded = !isExpanded }
+                                                .animateContentSize()
+                                        ) {
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .padding(16.dp)
+                                                        .size(32.dp)
+                                                        .background(Color.Green, CircleShape),
+                                                    contentAlignment = Alignment.Center
+                                                ) {
+                                                    Icon(
+                                                        imageVector = Icons.Default.Check,
+                                                        contentDescription = null,
+                                                        tint = Color.Black
+                                                    )
+                                                }
+                                                Text(
+                                                    text = stringResource(id = R.string.valid_change_message),
+                                                    modifier = Modifier.weight(1f)
+                                                )
+                                                IconButton(
+                                                    onClick = {
+                                                        isExpanded = !isExpanded
+                                                    }
+                                                ) {
+                                                    Icon(
+                                                        imageVector = if (!isExpanded) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
+                                                        contentDescription = null
+                                                    )
+                                                }
+                                                Spacer(modifier = Modifier.width(8.dp))
+                                            }
+                                            if (isExpanded) {
+                                                Row(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .padding(horizontal = 16.dp),
+                                                    verticalAlignment = Alignment.CenterVertically,
+                                                    horizontalArrangement = Arrangement.SpaceEvenly
+                                                ) {
+                                                    Text(
+                                                        text = stringResource(
+                                                            R.string.change_equal_to,
+                                                            changeResult.totalChange
+                                                        )
+                                                    )
+                                                    Text(text = "|")
+                                                    Text(
+                                                        text = stringResource(
+                                                            R.string.coins_equal_to,
+                                                            changeResult.totalCoins
+                                                        )
+                                                    )
+                                                }
+                                                Spacer(modifier = Modifier.height(16.dp))
+                                            }
+                                        }
+                                    }
+                                }
+
                                 items(changeResult.result) { item ->
                                     CoinChangeItem(
                                         coinChange = item,

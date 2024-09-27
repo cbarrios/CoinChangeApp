@@ -23,4 +23,6 @@
     <string name="confirm">Confirm</string>
     <string name="invalid_change_message">We cannot give you change based on your input.</string>
     <string name="valid_change_message">We got your change.</string>
+    <string name="change_equal_to">Change = %d¢</string>
+    <string name="coins_equal_to">Coins = %d</string>
 </resources>

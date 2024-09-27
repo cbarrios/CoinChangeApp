@@ -74,9 +74,20 @@ class DefaultCoinRepository : CoinRepository {
             if (array[change].first() == Int.MAX_VALUE) return@withContext CoinChangeResult.InvalidChange
 
             val result = array[change].groupBy { it }.map { entry ->
-                CoinChange(numberOfCoins = entry.value.size, entry.key)
+                val numCoins = entry.value.size
+                val coinValue = entry.key
+                val amount = coinValue * numCoins
+                CoinChange(
+                    numberOfCoins = numCoins,
+                    coinValue = coinValue,
+                    changeAmount = amount
+                )
             }
-            return@withContext CoinChangeResult.ValidChange(result = result)
+            return@withContext CoinChangeResult.ValidChange(
+                result = result,
+                totalCoins = result.sumOf { it.numberOfCoins },
+                totalChange = result.sumOf { it.changeAmount }
+            )
         }
     }
 }
