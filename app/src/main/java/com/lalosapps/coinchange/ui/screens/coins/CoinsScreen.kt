@@ -18,9 +18,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -103,7 +101,8 @@ fun CoinsScreen(
                     )
                 }
             }
-            FloatingActionButton(
+            // TODO: Add this later when we start the Edit functionality
+            /*FloatingActionButton(
                 onClick = {},
                 modifier = Modifier
                     .align(Alignment.BottomStart)
@@ -116,7 +115,7 @@ fun CoinsScreen(
                     imageVector = Icons.Default.Edit,
                     contentDescription = stringResource(R.string.continue_text)
                 )
-            }
+            }*/
         }
     }
 }
