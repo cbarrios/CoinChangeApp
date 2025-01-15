@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.coinchange"
+    namespace = "com.lalosapps.coinchange"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.coinchange"
+        applicationId = "com.lalosapps.coinchange"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
