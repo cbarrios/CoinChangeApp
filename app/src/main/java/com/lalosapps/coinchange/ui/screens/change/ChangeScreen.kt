@@ -29,11 +29,13 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -55,8 +57,11 @@ fun ChangeScreen(
     val validation = uiState.validation
 
     val requester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
     LaunchedEffect(key1 = Unit) {
+        withFrameNanos { }
         requester.requestFocus()
+        keyboardController?.show()
     }
 
     Scaffold(
@@ -149,7 +154,7 @@ fun ChangeScreen(
             ) {
                 ExtendedFloatingActionButton(
                     onClick = {
-                        // We know that actualChange is already validated if it is non null
+                        // We know that actualChange is already validated if it is non-null
                         validation.actualChange?.let { change ->
                             onNavigateToResultScreen(change)
                         }
