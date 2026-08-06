@@ -20,8 +20,14 @@ class ChangeViewModel @Inject constructor(
         private set
 
     fun onChangeEntered(change: String) {
-        uiState = uiState.copy(change = change)
-        validateChange(change)
+        val filtered = change.filter { it.isDigit() }.take(3)
+        val normalized = if (filtered.isEmpty()) {
+            filtered
+        } else {
+            filtered.trimStart('0').ifEmpty { "0" }
+        }
+        uiState = uiState.copy(change = normalized)
+        validateChange(normalized)
     }
 
     private var job: Job? = null
